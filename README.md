@@ -166,4 +166,67 @@ Key assumptions include:
 * Long-only ETF portfolios
 * Discrete rebalancing
 * Out-of-sample model scores only
-* One-day we
+* One-day weweight shifting to prevent look-ahead bias
+Transaction costs applied to turnover
+Volatility targeting to a fixed annualized risk level
+Performance comparison against a full-universe equal-weight buy-and-hold benchmark
+
+The benchmark is intentionally simple and transparent. It provides a diversified passive reference point rather than an optimized trading strategy.
+
+Transaction Cost Assumptions
+
+The base transaction-cost assumption is 12 basis points per unit of turnover.
+
+This is treated as a conservative all-in estimate covering:
+
+Commissions
+Bid-ask spread crossing
+Slippage
+Implementation friction
+
+A sensitivity analysis is included using:
+
+Scenario	Cost Assumption
+Optimistic	8 bps
+Base	12 bps
+Stressed	25 bps
+
+The purpose is not to claim broker-exact execution costs, but to demonstrate that results are evaluated under multiple implementation-cost assumptions.
+
+Monte Carlo Robustness Analysis
+
+The Monte Carlo notebook evaluates whether strategy conclusions are robust beyond a single historical backtest path.
+
+It includes:
+
+Bootstrap simulations of realized out-of-sample strategy returns.
+Random long-only portfolio clouds for comparison against simple reference allocators.
+Input-uncertainty simulations for Equal Weight, Inverse Volatility, and Mean-Variance portfolios.
+
+The results show that Mean-Variance optimization is more sensitive to estimation noise, while Equal Weight and Inverse Volatility are more stable.
+
+Stress Testing
+
+The stress-testing notebook evaluates performance during historical and hypothetical adverse scenarios.
+
+Historical stress periods include:
+
+2018 Q4 market selloff
+2020 COVID crash
+2022 rate shock
+
+Static shock scenarios test portfolio sensitivity to asset-class-level shocks, such as equity drawdowns and bond selloffs.
+
+The stress tests help identify whether each allocation method is exposed primarily to equity risk, bond risk, or broader cross-asset stress.
+
+Main Findings
+
+The main findings are:
+
+The LightGBM signal is useful as a ranking input, but the raw predictive edge is modest.
+Portfolio construction and risk management materially affect final performance.
+Regime-aware rebalancing improves practical strategy behaviour by reducing overtrading.
+Simpler allocation methods, especially Inverse Volatility, are more robust than complex optimizers.
+Mean-Variance optimization can produce unstable and concentrated weights under input uncertainty.
+The passive equal-weight full-universe benchmark remains difficult to outperform consistently, especially across strong equity bull-market periods.
+Stress testing and Monte Carlo analysis are essential for understanding robustness beyond headline backtest metrics.
